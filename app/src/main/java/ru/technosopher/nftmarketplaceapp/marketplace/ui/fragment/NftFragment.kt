@@ -2,6 +2,7 @@ package ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import ru.technosopher.nftmarketplaceapp.databinding.FragmentNftBinding
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.NftViewModel
 
 class NftFragment : Fragment() {
+
+    private val TAG : String = "NFT_FRAGMENT"
 
     private var _binding: FragmentNftBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +35,10 @@ class NftFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[NftViewModel::class.java]
+
+        val nftAddress = arguments?.getString("nftAddress")
+        Log.println(Log.DEBUG, TAG, "nftAddress : $nftAddress")
+        binding.tvAddress.text = nftAddress
         // TODO: Use the ViewModel
     }
 

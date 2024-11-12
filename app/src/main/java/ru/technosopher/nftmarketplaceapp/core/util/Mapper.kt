@@ -4,11 +4,11 @@ package ru.technosopher.nftmarketplaceapp.core.util
 import retrofit2.HttpException
 import ru.technosopher.nftmarketplaceapp.core.domain.entities.ApiError
 import ru.technosopher.nftmarketplaceapp.core.domain.entities.NetworkError
-import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftDto
+import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftItemDto
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import java.io.IOException
 
-fun NftDto.toEntity() = NftEntity(
+fun NftItemDto.toEntity() = NftEntity(
     address
 )
 
