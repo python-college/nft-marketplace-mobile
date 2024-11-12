@@ -8,10 +8,6 @@ import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftItemDto
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import java.io.IOException
 
-fun NftItemDto.toEntity() = NftEntity(
-    address
-)
-
 fun Throwable.toNetworkError(): NetworkError {
     val error = when(this) {
         is IOException -> ApiError.NETWORK_ERROR
