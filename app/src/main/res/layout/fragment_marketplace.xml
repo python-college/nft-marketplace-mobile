@@ -11,33 +11,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        tools:visibility="gone"/>
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/page_content"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
-        <Button
-            android:id="@+id/btn_view_nft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GO TO NFT"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+        android:layout_height="match_parent"
+        tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_collection_address"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_view_nft"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_collections"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_collection"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_view_nft"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="GO TO NFT"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_collection_address"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/btn_view_nft"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
         
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,5 +12,6 @@ fun NftItemDto.toEntity() = NftEntity(
 fun NftCollectionDto.toEntity() = NftCollectionEntity(
     name = metadata.name,
     address = address,
-    description = metadata.description
+    description = metadata.description,
+    imageUrl = metadata.image
 )

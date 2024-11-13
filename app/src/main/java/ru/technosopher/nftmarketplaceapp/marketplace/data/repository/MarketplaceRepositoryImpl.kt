@@ -23,22 +23,24 @@ class MarketplaceRepositoryImpl @Inject constructor(
     override suspend fun getCollections(): Either<NetworkError, List<NftCollectionEntity>> {
         return Either.catch {
             // Temporally returns hard-coded collection list
+            // TODO: implement API get list
             listOf(
                 NftCollectionEntity(
                     address = "EQB3ff_6atPL1Kh7s-OnYgY3zWR85reh9osBl1CHLwLZulRx",
                     name = "Коллекция он чейн",
-                    description = "нахцй"
+                    description = "нахцй",
+                    imageUrl = "https://cache.tonapi.io/imgproxy/5OJVJYOMyGLeVOQRMWDYE29i-CmLt4crHGn3FUTkGcA/rs:fill:500:500:1/g:no/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B5dGhvbi1jb2xsZWdlL2JhbGlzaC9yZWZzL2hlYWRzL21haW4vc3RpY2tlci5wbmc.webp"
                 ),
                 NftCollectionEntity(
                     address = "EQB3ff_6atPL1Kh7s-OnYgY3zWR85reh9osBl1CHLwLZulRx",
                     name = "Коллекция он чейн",
-                    description = "нахцй"
-                ),
+                    description = "нахцй",
+                    imageUrl = "https://cache.tonapi.io/imgproxy/5OJVJYOMyGLeVOQRMWDYE29i-CmLt4crHGn3FUTkGcA/rs:fill:500:500:1/g:no/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B5dGhvbi1jb2xsZWdlL2JhbGlzaC9yZWZzL2hlYWRzL21haW4vc3RpY2tlci5wbmc.webp"                ),
                 NftCollectionEntity(
                     address = "EQB3ff_6atPL1Kh7s-OnYgY3zWR85reh9osBl1CHLwLZulRx",
                     name = "Коллекция он чейн",
-                    description = "нахцй"
-                )
+                    description = "нахцй",
+                    imageUrl = "https://cache.tonapi.io/imgproxy/5OJVJYOMyGLeVOQRMWDYE29i-CmLt4crHGn3FUTkGcA/rs:fill:500:500:1/g:no/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B5dGhvbi1jb2xsZWdlL2JhbGlzaC9yZWZzL2hlYWRzL21haW4vc3RpY2tlci5wbmc.webp"                )
             )
         }.mapLeft { it.toNetworkError() }
     }

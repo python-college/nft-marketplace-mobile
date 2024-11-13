@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.technosopher.nftmarketplaceapp.R
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentMarketplaceBinding
+import ru.technosopher.nftmarketplaceapp.marketplace.ui.adapter.NftAdapter
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.MarketplaceViewModel
 
 @AndroidEntryPoint
@@ -29,6 +30,7 @@ class MarketplaceFragment : Fragment() {
     }
 
     private val viewModel: MarketplaceViewModel by viewModels<MarketplaceViewModel>()
+    private lateinit var nftAdapter: NftAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,15 +43,15 @@ class MarketplaceFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-        binding.btnViewNft.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_marketplaceFragment_to_nftFragment,
-                bundleOf(
-                    "nftAddress" to "EQBITipAFriALvpIpAgJAfFW5TczJvxOOBpjPQPhfzQhJ43D"
-                )
-            )
-        }
+        setupRecyclerView()
+//        binding.btnViewNft.setOnClickListener {
+//            findNavController().navigate(
+//                R.id.action_marketplaceFragment_to_nftFragment,
+//                bundleOf(
+//                    "nftAddress" to "EQBITipAFriALvpIpAgJAfFW5TczJvxOOBpjPQPhfzQhJ43D"
+//                )
+//            )
+//        }
         subscribe()
     }
 
@@ -60,13 +62,20 @@ class MarketplaceFragment : Fragment() {
             binding.pageContent.visibility = if (!value.isLoading && value.data != null) View.VISIBLE else View.GONE
 
             if (value.data == null) {
-                //
+                // Error message here
             } else  {
                 // Recycler here
-                binding.tvCollectionAddress.text = value.data.get(0).address
+                nftAdapter.differ.submitList(value.data)
             }
 
         })
+    }
+
+    private fun setupRecyclerView() {
+        nftAdapter = NftAdapter()
+        binding.rvCollections.apply {
+            adapter = nftAdapter
+        }
     }
 
     override fun onDestroyView() {
