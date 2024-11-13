@@ -18,7 +18,7 @@ class MarketplaceViewModel @Inject constructor(
     private val getCollectionListUseCase: GetCollectionListUseCase
 ) : ViewModel() {
 
-    private val TAG : String = "MARKETPLACE_VIEWMODEL"
+    public val TAG : String = "MARKETPLACE_VIEWMODEL"
 
     private val mutableStateLiveData: MutableLiveData<State> by lazy {
         MutableLiveData<State>()

@@ -23,13 +23,16 @@
                 android:padding="8dp"
                 android:orientation="vertical" >
                 <!--  TODO: Add default image              -->
+                <!--  TODO: Make image square without hardcode              -->
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_collection"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
                     app:imageUrl="@{collection.imageUrl}"
                     android:layout_marginHorizontal="4dp"
-                    tools:srcCompat="@drawable/ic_collection"/>
+                    app:shapeAppearanceOverlay="@style/RoundedSquare"
+                    tools:srcCompat="@tools:sample/avatars"/>
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -37,7 +40,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
-                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:text="@{collection.name}"

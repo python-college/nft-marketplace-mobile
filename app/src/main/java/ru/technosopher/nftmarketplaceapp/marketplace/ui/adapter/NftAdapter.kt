@@ -24,6 +24,8 @@ class NftAdapter : RecyclerView.Adapter<NftAdapter.NftCollectionViewHolder>(){
 
     val differ = AsyncListDiffer(this, differCallback)
 
+    private var onItemClickListener: ((NftCollectionEntity) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NftCollectionViewHolder {
         return NftCollectionViewHolder(
             DataBindingUtil.inflate(
@@ -39,10 +41,15 @@ class NftAdapter : RecyclerView.Adapter<NftAdapter.NftCollectionViewHolder>(){
         return differ.currentList.size
     }
 
-
+    fun setOnItemClickListener(listener: (NftCollectionEntity) -> Unit) {
+        onItemClickListener = listener
+    }
 
     override fun onBindViewHolder(holder: NftCollectionViewHolder, position: Int) {
         val collection = differ.currentList[position]
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(collection) }
+        }
         holder.bindData(collection)
     }
 

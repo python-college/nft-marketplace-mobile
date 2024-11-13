@@ -20,7 +20,7 @@ import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.MarketplaceVie
 @AndroidEntryPoint
 class MarketplaceFragment : Fragment() {
 
-    private val TAG : String = "MARKETPLACE_FRAGMENT"
+    public val TAG : String = "MARKETPLACE_FRAGMENT"
 
     private var _binding: FragmentMarketplaceBinding? = null
     private val binding get() = _binding!!
@@ -29,7 +29,7 @@ class MarketplaceFragment : Fragment() {
         fun newInstance() = MarketplaceFragment()
     }
 
-    private val viewModel: MarketplaceViewModel by viewModels<MarketplaceViewModel>()
+    private val viewModel: MarketplaceViewModel by viewModels()
     private lateinit var nftAdapter: NftAdapter
 
     override fun onCreateView(
@@ -41,8 +41,8 @@ class MarketplaceFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 //        binding.btnViewNft.setOnClickListener {
 //            findNavController().navigate(
@@ -52,6 +52,15 @@ class MarketplaceFragment : Fragment() {
 //                )
 //            )
 //        }
+        nftAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putString("collectionAddress", it.address)
+            }
+            findNavController().navigate(
+                R.id.action_marketplaceFragment_to_collectionFragment,
+                bundle
+            )
+        }
         subscribe()
     }
 

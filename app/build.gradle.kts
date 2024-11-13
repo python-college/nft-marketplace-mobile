@@ -52,6 +52,7 @@ dependencies {
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     // Retrofit
