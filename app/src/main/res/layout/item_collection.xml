@@ -11,7 +11,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="220dp"
             android:layout_margin="8dp"
             app:cardCornerRadius="12dp"
             app:strokeWidth="2dp">
@@ -29,19 +29,23 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
-                    app:imageUrl="@{collection.imageUrl}"
+                    app:imageUrl="@{collection.image}"
                     android:layout_marginHorizontal="4dp"
                     app:shapeAppearanceOverlay="@style/RoundedSquare"
                     tools:srcCompat="@tools:sample/avatars"/>
 
                 <TextView
                     android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@{collection.name}"
                     tools:text="Collection name"/>
 

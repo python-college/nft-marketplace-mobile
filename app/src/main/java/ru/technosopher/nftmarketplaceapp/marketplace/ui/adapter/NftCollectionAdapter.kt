@@ -10,7 +10,7 @@ import ru.technosopher.nftmarketplaceapp.R
 import ru.technosopher.nftmarketplaceapp.databinding.ItemCollectionBinding
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
 
-class NftAdapter : RecyclerView.Adapter<NftAdapter.NftCollectionViewHolder>(){
+class NftCollectionAdapter : RecyclerView.Adapter<NftCollectionAdapter.NftCollectionViewHolder>(){
 
     private val differCallback = object : DiffUtil.ItemCallback<NftCollectionEntity>() {
         override fun areItemsTheSame(oldItem: NftCollectionEntity, newItem: NftCollectionEntity): Boolean {

@@ -13,7 +13,6 @@ data class NftCollectionDto(
     val metadata: CollectionMetadataDto,
     @SerializedName("previews")
     val previews: List<PreviewDto>
-
 )
 
 data class CollectionMetadataDto(

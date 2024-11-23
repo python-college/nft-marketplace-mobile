@@ -4,6 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftCollectionDto
 import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftItemDto
+import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.dto.NftItemListDto
 
 interface MarketplaceApi {
     @GET("/nfts/{nft_address}")
@@ -11,5 +12,8 @@ interface MarketplaceApi {
 
     @GET("/nfts/collections/{collection_address}")
     suspend fun getCollection(@Path("collection_address") collectionAddress: String) : NftCollectionDto
+
+    @GET("/nfts/collections/{collection_address}/items")
+    suspend fun getCollectionItems(@Path("collection_address") collectionAddress: String) : NftItemListDto
 
 }

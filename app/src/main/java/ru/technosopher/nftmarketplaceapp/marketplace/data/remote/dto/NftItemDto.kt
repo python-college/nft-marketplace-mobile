@@ -8,7 +8,7 @@ data class NftItemDto(
     @SerializedName("index")
     val index: String,
     @SerializedName("owner_address")
-    val ownerAddress: String?,
+    val ownerAddress: String,
     @SerializedName("metadata")
     val metadata: NftMetadataDto,
     val collection: NftItemCollectionDto?,

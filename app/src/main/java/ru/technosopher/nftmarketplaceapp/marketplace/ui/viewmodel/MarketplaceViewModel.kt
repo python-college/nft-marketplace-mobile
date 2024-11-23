@@ -1,16 +1,14 @@
 package ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
-import ru.technosopher.nftmarketplaceapp.marketplace.domain.repository.MarketplaceRepository
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetCollectionListUseCase
-import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetCollectionUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,8 +21,8 @@ class MarketplaceViewModel @Inject constructor(
     private val mutableStateLiveData: MutableLiveData<State> by lazy {
         MutableLiveData<State>()
     }
-    val stateLiveData = mutableStateLiveData
-    // TODO: Implement the ViewModel
+    val stateLiveData : LiveData<State> = mutableStateLiveData
+
     init {
         viewModelScope.launch {
             getCollections()
@@ -41,6 +39,7 @@ class MarketplaceViewModel @Inject constructor(
         val response = getCollectionListUseCase.invoke()
         Log.d(TAG, "Response is Right : ${response.isRight()}")
         Log.d(TAG, "Response is Left : ${response.isLeft()}")
+        // TODO: Error handling
         if (response.isLeft()) {
             val left = response.leftOrNull()
             if (left != null) {

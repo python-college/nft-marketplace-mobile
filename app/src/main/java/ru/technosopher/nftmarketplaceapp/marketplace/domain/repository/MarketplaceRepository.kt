@@ -9,4 +9,5 @@ interface MarketplaceRepository {
     suspend fun getNft(nftAddress : String): Either<NetworkError, NftEntity>
     suspend fun getCollections(): Either<NetworkError, List<NftCollectionEntity>>
     suspend fun getCollection(address: String): Either<NetworkError, NftCollectionEntity>
+    suspend fun getCollectionItems(address: String): Either<NetworkError, List<NftEntity>>
 }

@@ -1,20 +1,17 @@
 package ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.technosopher.nftmarketplaceapp.R
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentMarketplaceBinding
-import ru.technosopher.nftmarketplaceapp.marketplace.ui.adapter.NftAdapter
+import ru.technosopher.nftmarketplaceapp.marketplace.ui.adapter.NftCollectionAdapter
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.MarketplaceViewModel
 
 @AndroidEntryPoint
@@ -27,10 +24,11 @@ class MarketplaceFragment : Fragment() {
 
     companion object {
         fun newInstance() = MarketplaceFragment()
+        const val COLLECTION_BUNDLE = "COLLECTION"
     }
 
     private val viewModel: MarketplaceViewModel by viewModels()
-    private lateinit var nftAdapter: NftAdapter
+    private lateinit var nftCollectionAdapter: NftCollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,18 +42,13 @@ class MarketplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-//        binding.btnViewNft.setOnClickListener {
-//            findNavController().navigate(
-//                R.id.action_marketplaceFragment_to_nftFragment,
-//                bundleOf(
-//                    "nftAddress" to "EQBITipAFriALvpIpAgJAfFW5TczJvxOOBpjPQPhfzQhJ43D"
-//                )
-//            )
-//        }
-        nftAdapter.setOnItemClickListener {
+
+        nftCollectionAdapter.setOnItemClickListener {
+
             val bundle = Bundle().apply {
-                putString("collectionAddress", it.address)
+                putParcelable(COLLECTION_BUNDLE, it)
             }
+
             findNavController().navigate(
                 R.id.action_marketplaceFragment_to_collectionFragment,
                 bundle
@@ -72,18 +65,20 @@ class MarketplaceFragment : Fragment() {
 
             if (value.data == null) {
                 // Error message here
+                // TODO: Error handling
+
             } else  {
                 // Recycler here
-                nftAdapter.differ.submitList(value.data)
+                nftCollectionAdapter.differ.submitList(value.data)
             }
 
         })
     }
 
     private fun setupRecyclerView() {
-        nftAdapter = NftAdapter()
+        nftCollectionAdapter = NftCollectionAdapter()
         binding.rvCollections.apply {
-            adapter = nftAdapter
+            adapter = nftCollectionAdapter
         }
     }
 

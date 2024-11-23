@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentCollectionBinding
+import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
+import ru.technosopher.nftmarketplaceapp.marketplace.ui.adapter.NftItemAdapter
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.CollectionViewModel
 
 @AndroidEntryPoint
@@ -19,11 +22,13 @@ class CollectionFragment : Fragment() {
     private var _binding: FragmentCollectionBinding? = null
     private val binding get() = _binding!!
 
+
     companion object {
         fun newInstance() = CollectionFragment()
     }
 
     private val viewModel: CollectionViewModel by viewModels()
+    private lateinit var nftItemAdapter: NftItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +41,42 @@ class CollectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val collection : NftCollectionEntity? = arguments?.getParcelable(MarketplaceFragment.COLLECTION_BUNDLE)
 
-        val collectionAddress = arguments?.getString("collectionAddress")
-        Log.println(Log.DEBUG, TAG, "nftAddress : $collectionAddress")
-        binding.tvAddress.text = collectionAddress
+        initUI(collection)
+        subscribe()
+        viewModel.getCollectionItems(collectionAddress = collection?.address)
+    }
+
+    fun subscribe() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<CollectionViewModel.State> {
+            value ->
+            binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
+
+            if (value.data == null) {
+                // TODO: Error handling
+            } else {
+                nftItemAdapter.differ.submitList(value.data)
+            }
+        })
+    }
+
+    private fun initUI(collection: NftCollectionEntity?) {
+
+        Log.println(Log.DEBUG, TAG, "nftAddress : ${collection?.address}")
+
+
+        binding.collection = collection
+        binding.executePendingBindings()
+
+        setupRecyclerView()
+
+    }
+
+    private fun setupRecyclerView() {
+        nftItemAdapter = NftItemAdapter()
+        binding.rvNftList.apply {
+            adapter = nftItemAdapter
+        }
     }
 }
