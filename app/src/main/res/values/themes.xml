@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.NFTMarketplaceApp" parent="Base.Theme.NFTMarketplaceApp" />
+
+    <style name="RoundedSquare">
+        <item name="cornerSize">10%</item>
+    </style>
+    <style name="Circle">
+        <item name="cornerSize">100%</item>
+    </style>
 </resources>

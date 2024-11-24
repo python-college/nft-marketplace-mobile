@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nft_nav_graph"
+    app:startDestination="@id/marketplaceFragment">
+
+
+    <fragment
+        android:id="@+id/marketplaceFragment"
+        android:name="ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment.MarketplaceFragment"
+        android:label="fragment_marketplace"
+        tools:layout="@layout/fragment_marketplace" >
+        <action
+            android:id="@+id/action_marketplaceFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment.CollectionFragment"
+        android:label="fragment_collection"
+        tools:layout="@layout/fragment_collection" >
+        <action
+            android:id="@+id/action_collectionFragment_to_nftFragment"
+            app:destination="@id/nftFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nftFragment"
+        android:name="ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment.NftFragment"
+        android:label="fragment_nft"
+        tools:layout="@layout/fragment_nft" />
+
+</navigation>
