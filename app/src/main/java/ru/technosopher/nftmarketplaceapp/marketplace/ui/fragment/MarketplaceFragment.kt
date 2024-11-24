@@ -41,23 +41,12 @@ class MarketplaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
 
-        nftCollectionAdapter.setOnItemClickListener {
-
-            val bundle = Bundle().apply {
-                putParcelable(COLLECTION_BUNDLE, it)
-            }
-
-            findNavController().navigate(
-                R.id.action_marketplaceFragment_to_collectionFragment,
-                bundle
-            )
-        }
+        initUI()
         subscribe()
     }
 
-    fun subscribe() {
+    private fun subscribe() {
         viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<MarketplaceViewModel.State> {
             value ->
             binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
@@ -75,8 +64,23 @@ class MarketplaceFragment : Fragment() {
         })
     }
 
+    private fun initUI() {
+        setupRecyclerView()
+    }
+
     private fun setupRecyclerView() {
         nftCollectionAdapter = NftCollectionAdapter()
+        nftCollectionAdapter.setOnItemClickListener {
+
+            val bundle = Bundle().apply {
+                putParcelable(COLLECTION_BUNDLE, it)
+            }
+
+            findNavController().navigate(
+                R.id.action_marketplaceFragment_to_collectionFragment,
+                bundle
+            )
+        }
         binding.rvCollections.apply {
             adapter = nftCollectionAdapter
         }

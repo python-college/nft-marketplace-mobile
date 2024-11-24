@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.technosopher.nftmarketplaceapp.R
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentCollectionBinding
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.adapter.NftItemAdapter
@@ -25,6 +27,8 @@ class CollectionFragment : Fragment() {
 
     companion object {
         fun newInstance() = CollectionFragment()
+        const val NFT_BUNDLE = "NFT"
+        const val COLLECTION_IMAGE_URL_BUNDLE = "COLLECTION_IMAGE"
     }
 
     private val viewModel: CollectionViewModel by viewModels()
@@ -48,7 +52,7 @@ class CollectionFragment : Fragment() {
         viewModel.getCollectionItems(collectionAddress = collection?.address)
     }
 
-    fun subscribe() {
+    private fun subscribe() {
         viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<CollectionViewModel.State> {
             value ->
             binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
@@ -69,12 +73,23 @@ class CollectionFragment : Fragment() {
         binding.collection = collection
         binding.executePendingBindings()
 
-        setupRecyclerView()
+        setupRecyclerView(collection)
 
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(collection: NftCollectionEntity?) {
         nftItemAdapter = NftItemAdapter()
+        nftItemAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putParcelable(NFT_BUNDLE, it)
+                putString(COLLECTION_IMAGE_URL_BUNDLE, collection?.image)
+            }
+
+            findNavController().navigate(
+                R.id.action_collectionFragment_to_nftFragment,
+                bundle
+            )
+        }
         binding.rvNftList.apply {
             adapter = nftItemAdapter
         }

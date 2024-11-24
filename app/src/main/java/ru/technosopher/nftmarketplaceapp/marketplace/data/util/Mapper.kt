@@ -30,5 +30,9 @@ fun NftItemDto.toEntity() = NftEntity(
     description = metadata.description,
     image = metadata.image,
     collectionAddress = collection?.address ?: "",
-    collectionName = collection?.name ?: ""
+    collectionName = collection?.name ?: "",
+    isForSale = sale != null,
+    priceValue = sale?.price?.value,
+    tokenName = sale?.price?.tokenName,
+    contractAddress = sale?.contractAddress
 )

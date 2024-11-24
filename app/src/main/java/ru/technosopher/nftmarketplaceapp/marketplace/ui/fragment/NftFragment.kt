@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentNftBinding
+import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.ui.viewmodel.NftViewModel
 
 @AndroidEntryPoint
@@ -23,7 +26,7 @@ class NftFragment : Fragment() {
         fun newInstance() = NftFragment()
     }
 
-    private lateinit var viewModel: NftViewModel
+    private val viewModel: NftViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +39,28 @@ class NftFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[NftViewModel::class.java]
+        val nft: NftEntity? = arguments?.getParcelable(CollectionFragment.NFT_BUNDLE)
+        val collectionImageUrl: String? = arguments?.getString(CollectionFragment.COLLECTION_IMAGE_URL_BUNDLE)
 
-        val nftAddress = arguments?.getString("nftAddress")
-        Log.println(Log.DEBUG, TAG, "nftAddress : $nftAddress")
-        binding.tvAddress.text = nftAddress
 
         // TODO: Use the ViewModel
+        initUI(nft, collectionImageUrl)
+        subscribe()
+        viewModel.update()
+    }
+
+    private fun subscribe() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<NftViewModel.State> {
+            value ->
+            binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
+            binding.pageContent.visibility = if (value.isLoading) View.GONE else View.VISIBLE
+        })
+    }
+
+    private fun initUI(nft: NftEntity?, collectionImageUrl: String?) {
+        binding.nft = nft
+        binding.collectionImageUrl = collectionImageUrl
+        binding.executePendingBindings()
     }
 
 }

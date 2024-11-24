@@ -19,10 +19,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/page_content"
-            android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="visible">
+            android:layout_height="match_parent">
 
             <ProgressBar
                 android:id="@+id/loading_bar"

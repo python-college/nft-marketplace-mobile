@@ -12,6 +12,8 @@ data class NftItemDto(
     @SerializedName("metadata")
     val metadata: NftMetadataDto,
     val collection: NftItemCollectionDto?,
+    @SerializedName("sale")
+    val sale: SaleDto?,
     val previews: List<PreviewDto>
 )
 
@@ -36,4 +38,19 @@ data class NftItemCollectionDto(
     val description: String
 )
 
+data class SaleDto(
+    @SerializedName("contract_address")
+    val contractAddress: String,
+    @SerializedName("owner_address")
+    val ownerAddress: String,
+    @SerializedName("price")
+    val price: PriceDto
+)
+
+data class PriceDto(
+    @SerializedName("value")
+    val value: String,
+    @SerializedName("token_name")
+    val tokenName: String
+)
 
