@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -44,6 +45,7 @@ android {
 
 dependencies {
     val hilt_version: String by rootProject.extra
+    val ktor_version = "3.0.1"
 
     implementation("androidx.core:core-ktx:1.14.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -86,6 +88,13 @@ dependencies {
     implementation("io.arrow-kt:arrow-core:1.2.0")
     implementation("io.arrow-kt:arrow-fx-coroutines:1.2.0")
 
+    // Ktor
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-websockets:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
