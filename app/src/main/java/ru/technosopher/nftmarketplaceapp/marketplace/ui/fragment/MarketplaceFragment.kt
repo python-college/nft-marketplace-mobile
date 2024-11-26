@@ -42,12 +42,12 @@ class MarketplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUI()
+        setupRecyclerView()
         subscribe()
     }
 
     private fun subscribe() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<MarketplaceViewModel.State> {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             value ->
             binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
             binding.pageContent.visibility = if (!value.isLoading && value.data != null) View.VISIBLE else View.GONE
@@ -61,11 +61,7 @@ class MarketplaceFragment : Fragment() {
                 nftCollectionAdapter.differ.submitList(value.data)
             }
 
-        })
-    }
-
-    private fun initUI() {
-        setupRecyclerView()
+        }
     }
 
     private fun setupRecyclerView() {

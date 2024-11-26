@@ -2,12 +2,10 @@ package ru.technosopher.nftmarketplaceapp.marketplace.ui.fragment
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.technosopher.nftmarketplaceapp.R
@@ -47,14 +45,13 @@ class CollectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val collection : NftCollectionEntity? = arguments?.getParcelable(MarketplaceFragment.COLLECTION_BUNDLE)
 
-        initUI(collection)
+        setupRecyclerView(collection)
         subscribe()
-        viewModel.getCollectionItems(collectionAddress = collection?.address)
+        viewModel.onCreate(collection)
     }
 
     private fun subscribe() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer<CollectionViewModel.State> {
-            value ->
+        viewModel.nftListStateLiveData.observe(viewLifecycleOwner) { value ->
             binding.loadingBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
 
             if (value.data == null) {
@@ -62,19 +59,14 @@ class CollectionFragment : Fragment() {
             } else {
                 nftItemAdapter.differ.submitList(value.data)
             }
-        })
-    }
-
-    private fun initUI(collection: NftCollectionEntity?) {
-
-        Log.println(Log.DEBUG, TAG, "nftAddress : ${collection?.address}")
-
-
-        binding.collection = collection
-        binding.executePendingBindings()
-
-        setupRecyclerView(collection)
-
+        }
+        viewModel.collectionStateLiveData.observe(viewLifecycleOwner) { value ->
+            if (value.data == null) {
+                // TODO: Error handling
+            } else {
+                binding.collection = value.data
+            }
+        }
     }
 
     private fun setupRecyclerView(collection: NftCollectionEntity?) {

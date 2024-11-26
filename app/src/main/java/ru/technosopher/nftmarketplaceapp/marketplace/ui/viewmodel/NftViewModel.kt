@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import javax.inject.Inject
 
 
@@ -27,19 +28,24 @@ class NftViewModel @Inject constructor(
         }
     }
 
-    public fun update() {
+    public fun onCreate(nftEntity: NftEntity?, collectionImageUrl: String?) {
         mutableStateLiveData.postValue(State(
+            nft = null,
+            collectionImageUrl = null,
             isLoading = true,
             errorMessage = null
         ))
-
         mutableStateLiveData.postValue(State(
+            nft = nftEntity,
+            collectionImageUrl = collectionImageUrl,
             isLoading = false,
             errorMessage = null
         ))
     }
 
     data class State(
+        val nft: NftEntity?,
+        val collectionImageUrl: String?,
         val isLoading: Boolean,
         val errorMessage: String?
     )
