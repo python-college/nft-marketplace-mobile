@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetCollectionItemsUseCase
-import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetCollectionUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,10 +18,15 @@ class CollectionViewModel @Inject constructor(
 ): ViewModel() {
     public val TAG : String = "COLLECTION_VIEWMODEL"
 
-    private val mutableStateLiveData: MutableLiveData<State> by lazy {
-        MutableLiveData<State>()
+    private val mutableNftListStateLiveData: MutableLiveData<NftListState> by lazy {
+        MutableLiveData<NftListState>()
     }
-    val stateLiveData : LiveData<State> = mutableStateLiveData
+    val nftListStateLiveData : LiveData<NftListState> = mutableNftListStateLiveData
+
+    private val mutableCollectionStateLiveData: MutableLiveData<CollectionState> by lazy {
+        MutableLiveData<CollectionState>()
+    }
+    val collectionStateLiveData: LiveData<CollectionState> = mutableCollectionStateLiveData
 
     init {
         viewModelScope.launch {
@@ -30,8 +34,21 @@ class CollectionViewModel @Inject constructor(
         }
     }
 
-    public fun getCollectionItems(collectionAddress: String?) = viewModelScope.launch {
-        mutableStateLiveData.postValue(State(
+    public fun onCreate(nftCollection: NftCollectionEntity?) {
+        Log.d(TAG, "${mutableNftListStateLiveData.value}")
+        mutableCollectionStateLiveData.postValue(CollectionState(
+            nftCollection,
+            if (nftCollection == null) "Unkwown error" else null
+        ))
+        if (mutableNftListStateLiveData.value != null) {
+            mutableNftListStateLiveData.postValue(mutableNftListStateLiveData.value)
+        } else {
+            getCollectionItems(collectionAddress = nftCollection?.address)
+        }
+    }
+
+    private fun getCollectionItems(collectionAddress: String?) = viewModelScope.launch {
+        mutableNftListStateLiveData.postValue(NftListState(
             data = null,
             isLoading = true,
             errorMessage = null
@@ -49,8 +66,8 @@ class CollectionViewModel @Inject constructor(
             } else {
                 val data = response.getOrNull()
                 if (data != null) {
-                    mutableStateLiveData.postValue(
-                        State(
+                    mutableNftListStateLiveData.postValue(
+                        NftListState(
                             data = data,
                             isLoading = false,
                             errorMessage = null
@@ -61,8 +78,12 @@ class CollectionViewModel @Inject constructor(
         }
     }
 
+    data class CollectionState(
+        val data: NftCollectionEntity?,
+        val errorMessage: String?
+    )
 
-    data class State(
+    data class NftListState(
         val data: List<NftEntity>?,
         val isLoading: Boolean,
         val errorMessage: String?
