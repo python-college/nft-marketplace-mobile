@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthLinkEntity
+import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthRejectedEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthSuccessEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ConnectToWebSocketUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthLinkUseCase
+import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthRejectUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthSuccessUseCase
 import javax.inject.Inject
 
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val connectToWebSocketUseCase: ConnectToWebSocketUseCase,
     private val observeAuthLinkUseCase: ObserveAuthLinkUseCase,
-    private val observeAuthSuccessUseCase: ObserveAuthSuccessUseCase
+    private val observeAuthSuccessUseCase: ObserveAuthSuccessUseCase,
+    private val observeAuthRejectUseCase: ObserveAuthRejectUseCase
 ): ViewModel() {
     public val TAG: String = "AUTH_VIEWMODEL"
 
@@ -32,9 +35,30 @@ class AuthViewModel @Inject constructor(
     }
     val successLiveData: LiveData<AuthSuccessEntity> = mutableSuccessLiveData
 
+    private val mutableRejectLiveData by lazy {
+        MutableLiveData<AuthRejectedEntity>()
+    }
+    val rejectLiveData: LiveData<AuthRejectedEntity> = mutableRejectLiveData
+
     init {
         viewModelScope.launch {
+            launch {
+                observeAuthLinkUseCase.invoke().collect {
+                    mutableAuthLinkLiveData.postValue(it)
+                }
+            }
 
+            launch {
+                observeAuthSuccessUseCase.invoke().collect {
+                    mutableSuccessLiveData.postValue(it)
+                }
+            }
+
+            launch {
+                observeAuthRejectUseCase.invoke().collect {
+                    mutableRejectLiveData.postValue(it)
+                }
+            }
         }
     }
 
@@ -43,17 +67,6 @@ class AuthViewModel @Inject constructor(
         launch {
             connectToWebSocketUseCase.invoke()
         }
-
-        launch {
-            observeAuthLinkUseCase.invoke().collect {
-                mutableAuthLinkLiveData.postValue(it)
-            }
-        }
-
-        launch {
-            observeAuthSuccessUseCase.invoke().collect {
-                mutableSuccessLiveData.postValue(it)
-            }
-        }
     }
+
 }

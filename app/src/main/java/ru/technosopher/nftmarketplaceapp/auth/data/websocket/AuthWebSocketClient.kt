@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import ru.technosopher.nftmarketplaceapp.auth.data.util.parseServerMessage
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthLinkDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthLinkPayloadDto
+import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthRejectedDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthSuccessDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthSuccessPayloadDto
 import javax.inject.Inject
@@ -20,9 +21,11 @@ class AuthWebSocketClient @Inject constructor(
     public val TAG: String = "AUTH_WEBSOCKET_CLIENT"
     private val authLinkFlow = MutableSharedFlow<AuthLinkPayloadDto>()
     private val authSuccessFlow = MutableSharedFlow<AuthSuccessPayloadDto>()
+    private val authRejectedFlow = MutableSharedFlow<AuthRejectedDto>()
 
     fun observeAuthLink(): SharedFlow<AuthLinkPayloadDto> = authLinkFlow
     fun observeAuthSuccess(): SharedFlow<AuthSuccessPayloadDto> = authSuccessFlow
+    fun observeAuthReject(): SharedFlow<AuthRejectedDto> = authRejectedFlow
 
     suspend fun connect() {
         httpClient.webSocket("/ws/auth") {
@@ -33,15 +36,16 @@ class AuthWebSocketClient @Inject constructor(
                 }
             }
         }
-        httpClient.close()
         Log.d(TAG, "Websocket closed!")
     }
 
     private suspend fun handleMessage(json: String) {
         Log.d(TAG, json)
+        // TODO: Error flow
         when (val message = parseServerMessage(json)) {
             is AuthLinkDto -> authLinkFlow.emit(message.payload)
             is AuthSuccessDto -> authSuccessFlow.emit(message.payload)
+            is AuthRejectedDto -> authRejectedFlow.emit(message)
         }
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthLinkDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthSuccessDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.ServerMessageDto
+import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthRejectedDto
 
 fun parseServerMessage(json: String): ServerMessageDto {
     val jsonObject = Json.parseToJsonElement(json).jsonObject
@@ -14,6 +15,7 @@ fun parseServerMessage(json: String): ServerMessageDto {
     return when (type) {
         "auth_link" -> Json.decodeFromString<AuthLinkDto>(json)
         "auth_success" -> Json.decodeFromString<AuthSuccessDto>(json)
-        else -> throw IllegalArgumentException("Unknown message type: $type")
+        "auth_user_rejects" -> Json.decodeFromString<AuthRejectedDto>(json)
+        else -> throw IllegalArgumentException("Unknown type: $type")
     }
 }
