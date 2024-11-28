@@ -8,11 +8,13 @@ import io.ktor.websocket.readText
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import ru.technosopher.nftmarketplaceapp.auth.data.util.parseServerMessage
+import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthErrorDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthLinkDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthLinkPayloadDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthRejectedDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthSuccessDto
 import ru.technosopher.nftmarketplaceapp.auth.data.websocket.dto.AuthSuccessPayloadDto
+import java.net.ConnectException
 import javax.inject.Inject
 
 class AuthWebSocketClient @Inject constructor(
@@ -22,19 +24,25 @@ class AuthWebSocketClient @Inject constructor(
     private val authLinkFlow = MutableSharedFlow<AuthLinkPayloadDto>()
     private val authSuccessFlow = MutableSharedFlow<AuthSuccessPayloadDto>()
     private val authRejectedFlow = MutableSharedFlow<AuthRejectedDto>()
+    private val authErrorFlow = MutableSharedFlow<AuthErrorDto>()
 
     fun observeAuthLink(): SharedFlow<AuthLinkPayloadDto> = authLinkFlow
     fun observeAuthSuccess(): SharedFlow<AuthSuccessPayloadDto> = authSuccessFlow
     fun observeAuthReject(): SharedFlow<AuthRejectedDto> = authRejectedFlow
+    fun observeAuthError(): SharedFlow<AuthErrorDto> = authErrorFlow
 
     suspend fun connect() {
-        httpClient.webSocket("/ws/auth") {
-            Log.d(TAG, "Websocket connected!")
-            for (frame in incoming) {
-                if (frame is Frame.Text) {
-                    handleMessage(frame.readText())
+        try {
+            httpClient.webSocket("/ws/auth") {
+                Log.d(TAG, "Websocket connected!")
+                for (frame in incoming) {
+                    if (frame is Frame.Text) {
+                        handleMessage(frame.readText())
+                    }
                 }
             }
+        } catch (e: ConnectException) {
+            handleMessage("""{"type": "error"}""")
         }
         Log.d(TAG, "Websocket closed!")
     }
@@ -46,6 +54,7 @@ class AuthWebSocketClient @Inject constructor(
             is AuthLinkDto -> authLinkFlow.emit(message.payload)
             is AuthSuccessDto -> authSuccessFlow.emit(message.payload)
             is AuthRejectedDto -> authRejectedFlow.emit(message)
+            is AuthErrorDto -> authErrorFlow.emit(message)
         }
     }
 }

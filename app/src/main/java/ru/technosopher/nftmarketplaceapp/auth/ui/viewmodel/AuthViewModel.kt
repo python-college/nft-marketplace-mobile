@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthErrorEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthLinkEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthRejectedEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.entities.AuthSuccessEntity
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ConnectToWebSocketUseCase
+import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthErrorUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthLinkUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthRejectUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthSuccessUseCase
@@ -21,7 +23,8 @@ class AuthViewModel @Inject constructor(
     private val connectToWebSocketUseCase: ConnectToWebSocketUseCase,
     private val observeAuthLinkUseCase: ObserveAuthLinkUseCase,
     private val observeAuthSuccessUseCase: ObserveAuthSuccessUseCase,
-    private val observeAuthRejectUseCase: ObserveAuthRejectUseCase
+    private val observeAuthRejectUseCase: ObserveAuthRejectUseCase,
+    private val observeAuthErrorUseCase: ObserveAuthErrorUseCase
 ): ViewModel() {
     public val TAG: String = "AUTH_VIEWMODEL"
 
@@ -40,6 +43,11 @@ class AuthViewModel @Inject constructor(
     }
     val rejectLiveData: LiveData<AuthRejectedEntity> = mutableRejectLiveData
 
+    private val mutableErrorLiveData by lazy {
+        MutableLiveData<AuthErrorEntity>()
+    }
+    val errorLiveData: LiveData<AuthErrorEntity> = mutableErrorLiveData
+
     init {
         viewModelScope.launch {
             launch {
@@ -57,6 +65,12 @@ class AuthViewModel @Inject constructor(
             launch {
                 observeAuthRejectUseCase.invoke().collect {
                     mutableRejectLiveData.postValue(it)
+                }
+            }
+
+            launch {
+                observeAuthErrorUseCase.invoke().collect {
+                    mutableErrorLiveData.postValue(it)
                 }
             }
         }

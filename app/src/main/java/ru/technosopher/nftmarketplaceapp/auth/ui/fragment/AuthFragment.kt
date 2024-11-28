@@ -82,5 +82,9 @@ class AuthFragment : Fragment() {
                 Snackbar.make(binding.root, getString(R.string.authorization_denied), Snackbar.LENGTH_SHORT).show()
             }
         }
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            Log.d(TAG, "Auth error")
+            Snackbar.make(binding.root, getString(R.string.error_occurred), Snackbar.LENGTH_SHORT).show()
+        }
     }
 }
