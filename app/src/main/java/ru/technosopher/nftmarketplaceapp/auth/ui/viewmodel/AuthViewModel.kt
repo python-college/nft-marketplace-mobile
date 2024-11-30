@@ -16,6 +16,10 @@ import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthErrorUse
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthLinkUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthRejectUseCase
 import ru.technosopher.nftmarketplaceapp.auth.domain.usecase.ObserveAuthSuccessUseCase
+import ru.technosopher.nftmarketplaceapp.core.domain.usecase.GetSessionIdUseCase
+import ru.technosopher.nftmarketplaceapp.core.domain.usecase.GetWalletAddressUseCase
+import ru.technosopher.nftmarketplaceapp.core.domain.usecase.SaveSessionIdUseCase
+import ru.technosopher.nftmarketplaceapp.core.domain.usecase.SaveWalletAddressUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +28,11 @@ class AuthViewModel @Inject constructor(
     private val observeAuthLinkUseCase: ObserveAuthLinkUseCase,
     private val observeAuthSuccessUseCase: ObserveAuthSuccessUseCase,
     private val observeAuthRejectUseCase: ObserveAuthRejectUseCase,
-    private val observeAuthErrorUseCase: ObserveAuthErrorUseCase
+    private val observeAuthErrorUseCase: ObserveAuthErrorUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase,
+    private val getWalletAddressUseCase: GetWalletAddressUseCase,
+    private val saveSessionIdUseCase: SaveSessionIdUseCase,
+    private val saveWalletAddressUseCase: SaveWalletAddressUseCase
 ): ViewModel() {
     public val TAG: String = "AUTH_VIEWMODEL"
 
@@ -48,8 +56,21 @@ class AuthViewModel @Inject constructor(
     }
     val errorLiveData: LiveData<AuthErrorEntity> = mutableErrorLiveData
 
+    private val mutableAuthenticatedLiveData by lazy {
+        MutableLiveData<String>()
+    }
+    val authenticatedLiveData: LiveData<String> = mutableAuthenticatedLiveData
+
     init {
         viewModelScope.launch {
+
+            launch {
+                val sessionId = getSessionIdUseCase.invoke()
+                Log.d(TAG, "SessionId: $sessionId")
+                Log.d(TAG, "WalletAddress: ${getWalletAddressUseCase.invoke()}")
+                mutableAuthenticatedLiveData.postValue(sessionId)
+            }
+
             launch {
                 observeAuthLinkUseCase.invoke().collect {
                     mutableAuthLinkLiveData.postValue(it)
@@ -58,6 +79,8 @@ class AuthViewModel @Inject constructor(
 
             launch {
                 observeAuthSuccessUseCase.invoke().collect {
+                    saveSessionIdUseCase.invoke(it.sessionId)
+                    saveWalletAddressUseCase.invoke(it.address)
                     mutableSuccessLiveData.postValue(it)
                 }
             }

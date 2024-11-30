@@ -71,9 +71,22 @@ class AuthFragment : Fragment() {
             }
         }
 
+        viewModel.authenticatedLiveData.observe(viewLifecycleOwner) { value ->
+            if (value != null) {
+                findNavController().navigate(
+                    R.id.action_authFragment_to_marketplaceFragment
+                )
+            } else {
+                binding.loadingBar.visibility = View.GONE
+                binding.pageContent.visibility = View.VISIBLE
+            }
+        }
+
         viewModel.successLiveData.observe(viewLifecycleOwner) { value ->
             Log.d(TAG, "Success auth!\nAddress: ${value.address} \nSessionID: ${value.sessionId}")
-            binding.tvDevInfo.text = value.sessionId
+            findNavController().navigate(
+                R.id.action_authFragment_to_marketplaceFragment
+            )
         }
 
         viewModel.rejectLiveData.observe(viewLifecycleOwner) { value ->

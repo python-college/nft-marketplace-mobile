@@ -10,13 +10,10 @@
         android:name="ru.technosopher.nftmarketplaceapp.auth.ui.fragment.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" >
+        <!--        TODO: Make animation -->
         <action
             android:id="@+id/action_authFragment_to_marketplaceFragment"
             app:destination="@id/marketplaceFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/authFragment"
             app:popUpToInclusive="true"/>
     </fragment>
