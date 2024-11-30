@@ -38,7 +38,7 @@ class CollectionViewModel @Inject constructor(
         Log.d(TAG, "${mutableNftListStateLiveData.value}")
         mutableCollectionStateLiveData.postValue(CollectionState(
             nftCollection,
-            if (nftCollection == null) "Unkwown error" else null
+            if (nftCollection == null) "Unknown error" else null
         ))
         if (mutableNftListStateLiveData.value != null) {
             mutableNftListStateLiveData.postValue(mutableNftListStateLiveData.value)
