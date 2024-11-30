@@ -52,4 +52,20 @@
         android:label="fragment_nft"
         tools:layout="@layout/fragment_nft" />
 
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="ru.technosopher.nftmarketplaceapp.search.ui.fragment.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.technosopher.nftmarketplaceapp.profile.ui.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <action android:id="@+id/action_global_marketplaceFragment" app:destination="@id/marketplaceFragment"/>
+    <action android:id="@+id/action_global_searchFragment" app:destination="@id/searchFragment"/>
+    <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/>
+
 </navigation>

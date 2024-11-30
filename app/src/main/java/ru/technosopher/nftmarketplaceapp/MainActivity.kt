@@ -2,6 +2,7 @@ package ru.technosopher.nftmarketplaceapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,12 +24,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
-//        val navController = navHostFragment.navController
-//
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        bottomNavigationView.setupWithNavController(navController)
+
 //        binding.bottomNavigationView.setupWithNavController(navController)
 //        binding.bottomNavigationView.setupWithNavController()
-
+//        bottomNavigationView.setOnItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.marketplaceFragment -> navController.navigate(R.id.marketplaceFragment)
+//                R.id.searchFragment -> navController.navigate(R.id.searchFragment)
+//                else -> false
+//            }
+//            true
+//        }
 
     }
 
