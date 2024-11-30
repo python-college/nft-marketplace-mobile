@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NFTMarketplaceApp</string>
+    <string name="app_name">RareBay</string>
     <string name="address">Address</string>
     <string name="items">Items</string>
     <string name="authorization_denied">Authorization denied</string>

@@ -37,9 +37,9 @@ class AuthViewModel @Inject constructor(
     public val TAG: String = "AUTH_VIEWMODEL"
 
     private val mutableAuthLinkLiveData by lazy {
-        MutableLiveData<AuthLinkEntity>()
+        MutableLiveData<AuthLinkEntity?>()
     }
-    val authLinkLiveData: LiveData<AuthLinkEntity> = mutableAuthLinkLiveData
+    val authLinkLiveData: LiveData<AuthLinkEntity?> = mutableAuthLinkLiveData
 
     private val mutableSuccessLiveData by lazy {
         MutableLiveData<AuthSuccessEntity>()
@@ -57,9 +57,9 @@ class AuthViewModel @Inject constructor(
     val errorLiveData: LiveData<AuthErrorEntity> = mutableErrorLiveData
 
     private val mutableAuthenticatedLiveData by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String?>()
     }
-    val authenticatedLiveData: LiveData<String> = mutableAuthenticatedLiveData
+    val authenticatedLiveData: LiveData<String?> = mutableAuthenticatedLiveData
 
     init {
         viewModelScope.launch {
@@ -74,6 +74,7 @@ class AuthViewModel @Inject constructor(
             launch {
                 observeAuthLinkUseCase.invoke().collect {
                     mutableAuthLinkLiveData.postValue(it)
+                    mutableAuthLinkLiveData.value = null    // Зануляем, чтобы избежать повторного вызова при смене конфигурации
                 }
             }
 
