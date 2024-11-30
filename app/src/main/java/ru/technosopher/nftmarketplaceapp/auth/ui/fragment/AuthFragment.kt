@@ -60,14 +60,16 @@ class AuthFragment : Fragment() {
 
     private fun subscribe() {
         viewModel.authLinkLiveData.observe(viewLifecycleOwner) { value ->
-            Log.d(TAG, "Auth link: ${value.url}")
+            if (value != null) {
+                Log.d(TAG, "Auth link: ${value.url}")
 
-            val deepLink = Uri.parse(value.url)
-            val webIntent: Intent = Intent(Intent.ACTION_VIEW, deepLink)
-            try {
-                startActivity(webIntent)
-            } catch (e: ActivityNotFoundException) {
-                Log.d(TAG, "$e")
+                val deepLink = Uri.parse(value.url)
+                val webIntent: Intent = Intent(Intent.ACTION_VIEW, deepLink)
+                try {
+                    startActivity(webIntent)
+                } catch (e: ActivityNotFoundException) {
+                    Log.d(TAG, "$e")
+                }
             }
         }
 
@@ -89,11 +91,9 @@ class AuthFragment : Fragment() {
             )
         }
 
-        viewModel.rejectLiveData.observe(viewLifecycleOwner) { value ->
+        viewModel.rejectLiveData.observe(viewLifecycleOwner) {
             Log.d(TAG, "User rejected auth")
-            if (value != null) {
-                Snackbar.make(binding.root, getString(R.string.authorization_denied), Snackbar.LENGTH_SHORT).show()
-            }
+            Snackbar.make(binding.root, getString(R.string.authorization_denied), Snackbar.LENGTH_SHORT).show()
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
             Log.d(TAG, "Auth error")
