@@ -65,10 +65,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
 
             launch {
-                val sessionId = getSessionIdUseCase.invoke()
-                Log.d(TAG, "SessionId: $sessionId")
-                Log.d(TAG, "WalletAddress: ${getWalletAddressUseCase.invoke()}")
-                mutableAuthenticatedLiveData.postValue(sessionId)
+                checkAuth()
             }
 
             launch {
@@ -105,6 +102,13 @@ class AuthViewModel @Inject constructor(
         launch {
             connectToWebSocketUseCase.invoke()
         }
+    }
+
+    private fun checkAuth() = viewModelScope.launch {
+        // TODO: Add check auth use case
+        val sessionId = getSessionIdUseCase.invoke()
+        Log.d(TAG, "SessionId: $sessionId")
+        mutableAuthenticatedLiveData.postValue(sessionId)
     }
 
 }
