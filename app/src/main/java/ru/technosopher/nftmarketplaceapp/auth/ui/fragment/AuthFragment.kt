@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import ru.technosopher.nftmarketplaceapp.MainActivity
 import ru.technosopher.nftmarketplaceapp.R
 import ru.technosopher.nftmarketplaceapp.auth.ui.viewmodel.AuthViewModel
 import ru.technosopher.nftmarketplaceapp.databinding.FragmentAuthBinding
@@ -52,9 +52,8 @@ class AuthFragment : Fragment() {
             viewModel.auth()
         }
         binding.tvSkip.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_authFragment_to_marketplaceFragment
-            )
+            // TODO: Remove skip, it is developer button
+            onAuthenticationSuccess()
         }
     }
 
@@ -72,10 +71,8 @@ class AuthFragment : Fragment() {
         }
 
         viewModel.authenticatedLiveData.observe(viewLifecycleOwner) { value ->
-            if (value != null) {
-                findNavController().navigate(
-                    R.id.action_authFragment_to_marketplaceFragment
-                )
+            if (value != null && value != "") {
+                onAuthenticationSuccess()
             } else {
                 binding.loadingBar.visibility = View.GONE
                 binding.pageContent.visibility = View.VISIBLE
@@ -84,9 +81,7 @@ class AuthFragment : Fragment() {
 
         viewModel.successLiveData.observe(viewLifecycleOwner) { value ->
             Log.d(TAG, "Success auth!\nAddress: ${value.address} \nSessionID: ${value.sessionId}")
-            findNavController().navigate(
-                R.id.action_authFragment_to_marketplaceFragment
-            )
+            onAuthenticationSuccess()
         }
 
         viewModel.rejectLiveData.observe(viewLifecycleOwner) { value ->
@@ -100,4 +95,6 @@ class AuthFragment : Fragment() {
             Snackbar.make(binding.root, getString(R.string.error_occurred), Snackbar.LENGTH_SHORT).show()
         }
     }
+
+    private fun onAuthenticationSuccess() = (activity as? MainActivity)?.onAuthenticationSuccess()
 }

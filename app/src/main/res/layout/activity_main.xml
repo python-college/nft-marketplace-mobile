@@ -16,17 +16,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"/>
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"/>
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/bottom_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomNavBarHeight"
-        app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="16dp"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:cnb_iconSize="24dp"
+        app:cnb_unselectedColor="@color/unselected"
+        app:cnb_menuResource="@menu/bottom_navigation_menu"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

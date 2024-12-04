@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<!--  Temporally here is nftFragment, later here will be MarketplaceFragment  -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/marketplaceFragment"
-        android:title="Marketplace" />
+        android:title="Marketplace"
+        android:icon="@drawable/ic_home"
+        app:cnb_iconColor="@color/primary"/>
 
     <item android:id="@+id/searchFragment"
-        android:title="Search" />
+        android:title="Search"
+        android:icon="@drawable/ic_search"
+        app:cnb_iconColor="@color/primary"/>
 
     <item android:id="@+id/profileFragment"
-        android:title="Profile"/>
+        android:title="Profile"
+        android:icon="@drawable/ic_user"
+        app:cnb_iconColor="@color/primary"/>
 
 </menu>

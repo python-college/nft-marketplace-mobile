@@ -64,8 +64,20 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
-    <action android:id="@+id/action_global_marketplaceFragment" app:destination="@id/marketplaceFragment"/>
-    <action android:id="@+id/action_global_searchFragment" app:destination="@id/searchFragment"/>
-    <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/>
+    <action
+        android:id="@+id/action_global_marketplaceFragment"
+        app:destination="@id/marketplaceFragment"
+        app:popUpTo="@+id/marketplaceFragment"
+        app:popUpToInclusive="true"/>
+    <action
+        android:id="@+id/action_global_searchFragment"
+        app:destination="@id/searchFragment"
+        app:popUpTo="@+id/searchFragment"
+        app:popUpToInclusive="true"/>
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment"
+        app:popUpTo="@+id/profileFragment"
+        app:popUpToInclusive="true"/>
 
 </navigation>
