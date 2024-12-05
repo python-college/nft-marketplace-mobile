@@ -5,10 +5,14 @@ import com.google.gson.annotations.SerializedName
 data class NftCollectionDto(
     @SerializedName("address")
     val address: String,
+    @SerializedName("raw_address")
+    val rawAddress: String,
     @SerializedName("owner_address")
     val ownerAddress: String,
     @SerializedName("items_count")
     val itemsCount: String,
+    @SerializedName("hype")
+    val hype: String,
     @SerializedName("metadata")
     val metadata: CollectionMetadataDto,
     @SerializedName("previews")

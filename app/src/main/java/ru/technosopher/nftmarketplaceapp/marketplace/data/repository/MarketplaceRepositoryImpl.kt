@@ -6,6 +6,7 @@ import ru.technosopher.nftmarketplaceapp.core.util.toNetworkError
 import ru.technosopher.nftmarketplaceapp.marketplace.data.remote.MarketplaceApi
 import ru.technosopher.nftmarketplaceapp.marketplace.data.util.toEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
+import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionTopEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftEntity
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.repository.MarketplaceRepository
 import java.util.stream.Collectors
@@ -21,6 +22,7 @@ class MarketplaceRepositoryImpl @Inject constructor(
         }.mapLeft { it.toNetworkError() }
     }
 
+    @Deprecated("DEVELOPER METHOD")
     override suspend fun getCollections(): Either<NetworkError, List<NftCollectionEntity>> {
         return Either.catch {
             // Temporally returns hard-coded collection list
@@ -67,6 +69,17 @@ class MarketplaceRepositoryImpl @Inject constructor(
                 .map {it.toEntity()}
                 .collect(Collectors.toList())
         }.mapLeft { it.toNetworkError() }
+    }
+
+    override suspend fun getMostHypeCollections(
+        page: String,
+        pageSize: String
+    ): Either<NetworkError, NftCollectionTopEntity> {
+        return Either.catch {
+            api.getMostHypeCollections(page, pageSize).toEntity()
+        }.mapLeft {
+            it.toNetworkError()
+        }
     }
 
 }
