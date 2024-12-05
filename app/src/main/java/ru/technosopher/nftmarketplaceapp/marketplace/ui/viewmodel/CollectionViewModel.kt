@@ -35,7 +35,7 @@ class CollectionViewModel @Inject constructor(
     }
 
     public fun onCreate(nftCollection: NftCollectionEntity?) {
-        Log.d(TAG, "${mutableNftListStateLiveData.value}")
+        Log.d(TAG, "mutableNftListStateLiveData: ${mutableNftListStateLiveData.value}")
         mutableCollectionStateLiveData.postValue(CollectionState(
             nftCollection,
             if (nftCollection == null) "Unknown error" else null
