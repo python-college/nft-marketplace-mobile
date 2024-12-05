@@ -33,7 +33,7 @@ class AuthWebSocketClient @Inject constructor(
 
     suspend fun connect() {
         try {
-            httpClient.webSocket("/ws/auth") {
+            httpClient.webSocket("/main/api/v1/ws/auth") {
                 Log.d(TAG, "Websocket connected!")
                 for (frame in incoming) {
                     if (frame is Frame.Text) {
@@ -49,7 +49,7 @@ class AuthWebSocketClient @Inject constructor(
 
     private suspend fun handleMessage(json: String) {
         Log.d(TAG, json)
-        // TODO: Error flow
+
         when (val message = parseServerMessage(json)) {
             is AuthLinkDto -> authLinkFlow.emit(message.payload)
             is AuthSuccessDto -> authSuccessFlow.emit(message.payload)
