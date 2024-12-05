@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.technosopher.nftmarketplaceapp.marketplace.domain.entities.NftCollectionEntity
-import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetCollectionListUseCase
+import ru.technosopher.nftmarketplaceapp.marketplace.domain.usecase.GetMostHypeCollectionsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketplaceViewModel @Inject constructor(
-    private val getCollectionListUseCase: GetCollectionListUseCase
+    private val getMostHypeCollectionsUseCase: GetMostHypeCollectionsUseCase
 ) : ViewModel() {
 
     public val TAG : String = "MARKETPLACE_VIEWMODEL"
@@ -36,7 +36,7 @@ class MarketplaceViewModel @Inject constructor(
             errorMessage = null
         )
         )
-        val response = getCollectionListUseCase.invoke()
+        val response = getMostHypeCollectionsUseCase.invoke()
         Log.d(TAG, "Response is Right : ${response.isRight()}")
         Log.d(TAG, "Response is Left : ${response.isLeft()}")
         // TODO: Error handling
@@ -47,9 +47,10 @@ class MarketplaceViewModel @Inject constructor(
             }
         }
         val data = response.getOrNull()
+        // TODO: Make pagination
         if (data != null) {
             mutableStateLiveData.postValue(State(
-                data = data,
+                data = data.collections,
                 isLoading = false,
                 errorMessage = null
             ))
