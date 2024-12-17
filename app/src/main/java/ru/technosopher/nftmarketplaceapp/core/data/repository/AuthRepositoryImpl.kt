@@ -34,4 +34,16 @@ class AuthRepositoryImpl @Inject constructor(
         val preferences = dataStore.data.firstOrNull()
         return preferences?.get(walletAddressKey)
     }
+
+    override suspend fun deleteSessionId() {
+        dataStore.edit { prefs ->
+            prefs[sessionIdKey] = ""
+        }
+    }
+
+    override suspend fun deleteWalletAddress() {
+        dataStore.edit { prefs ->
+            prefs[walletAddressKey] = ""
+        }
+    }
 }
