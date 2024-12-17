@@ -137,6 +137,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="4dp"
                     android:background="@drawable/shape_rounded_rectangle"
+                    android:backgroundTint="@color/secondary"
                     android:orientation="vertical">
                     
                     <LinearLayout
