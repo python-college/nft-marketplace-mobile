@@ -7,4 +7,7 @@ interface AuthRepository {
 
     suspend fun saveWalletAddress(walletAddress: String)
     suspend fun getWalletAddress(): String?
+
+    suspend fun deleteSessionId()
+    suspend fun deleteWalletAddress()
 }

@@ -75,4 +75,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavBar.setItemSelected(R.id.marketplaceFragment, true)
     }
 
+    fun onExit() {
+        navController.navigate(R.id.authFragment)
+    }
 }
