@@ -1,9 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.NFTMarketplaceApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorTertiary">@color/tertiary</item>
+    </style>
+
+    <style name="Widget.MyApp.FloatingActionButton.Secondary" parent="ThemeOverlay.Material3.FloatingActionButton.Secondary">
+        <item name="backgroundTint">@color/secondary</item>
+        <item name="iconTint">@color/unselected</item>
+        <item name="shapeAppearance">@style/Circle</item>
     </style>
 
     <style name="Theme.NFTMarketplaceApp" parent="Base.Theme.NFTMarketplaceApp" />
+
+    <style name="RoundedSquare">
+        <item name="cornerSize">10%</item>
+    </style>
+    <style name="Circle">
+        <item name="cornerSize">100%</item>
+    </style>
 </resources>
