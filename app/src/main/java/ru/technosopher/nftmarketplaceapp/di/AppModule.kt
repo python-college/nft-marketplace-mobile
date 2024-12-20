@@ -25,7 +25,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val BASE_IP_ADDRESS = "194.87.131.18"
+    private const val BASE_IP_ADDRESS = "api.rarebay.ru"
     private const val BASE_URL = "http://$BASE_IP_ADDRESS"
     private const val BASE_WS = "ws://$BASE_IP_ADDRESS"
 
