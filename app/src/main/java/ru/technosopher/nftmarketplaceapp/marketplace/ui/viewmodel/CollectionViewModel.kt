@@ -57,6 +57,7 @@ class CollectionViewModel @Inject constructor(
             val response = getCollectionItemsUseCase.invoke(collectionAddress)
             Log.d(TAG, "Response is Right : ${response.isRight()}")
             Log.d(TAG, "Response is Left : ${response.isLeft()}")
+            Log.d(TAG, "Response: ${response.getOrNull()}")
             // TODO: Error handling
             if (response.isLeft()) {
                 val left = response.leftOrNull()

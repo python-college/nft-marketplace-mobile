@@ -31,7 +31,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/bottomNavBarHeight"/>
 
 <!--        <Button-->
 <!--            android:id="@+id/btn_view_nft"-->
